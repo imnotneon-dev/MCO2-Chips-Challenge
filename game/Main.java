@@ -24,7 +24,7 @@ public class Main {
 
         javax.swing.SwingUtilities.invokeLater(() -> {
             MyFrame view = new MyFrame();
-            Sound.playMusic("Chip's Challenge Music.wav");
+            Sound.playMusic("sound/Chip's Challenge Music.wav");
         });
     }
 }
