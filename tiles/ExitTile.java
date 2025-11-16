@@ -9,7 +9,7 @@ public class ExitTile extends Tiles {
 
     @Override
     public boolean isWalkable(Inventory inv, int requiredChips) {
-        return inv.getChipCount() >= requiredChips;
+        return inv.getChips() >= requiredChips;
     }
 
 }
