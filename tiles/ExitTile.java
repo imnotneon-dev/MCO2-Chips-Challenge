@@ -1,10 +1,12 @@
 package tiles;
 
+import javax.swing.ImageIcon;
+
 public class ExitTile extends Tiles {
     
     public ExitTile() {
         super('E');
-        // will add sprite when GUI is implemented
+        sprite = (new ImageIcon("images/ExitTile.png"));
     }
 
     @Override

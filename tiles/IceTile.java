@@ -1,10 +1,12 @@
 package tiles;
 
+import javax.swing.ImageIcon;
+
 public class IceTile extends Tiles {
     
     public IceTile() {
         super('I');
-        // will add sprite when GUI is implemented
+        sprite = new ImageIcon("images/ForceTileRight.png");
     }
 
     public void onStep(Chip chip, Maps map) {

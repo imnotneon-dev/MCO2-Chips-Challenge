@@ -37,7 +37,7 @@ public class MyFrame extends JFrame {
                 }
             }
         };
-        backgroundPanel.setLayout(null); // use absolute positioning
+        backgroundPanel.setLayout(null);
 
         // Buttons
         playButton = new JButton("Play");
@@ -45,12 +45,19 @@ public class MyFrame extends JFrame {
 
         playButton.setBounds(245, 350, 200, 50);
         playButton.setFont(new Font("Courier New", Font.BOLD, 24));
+        playButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         exitButton.setBounds(245, 450, 200, 50);
         exitButton.setFont(new Font("Courier New", Font.BOLD, 24));
+        exitButton.addActionListener(e -> System.exit(0));
 
         backgroundPanel.add(playButton);
         backgroundPanel.add(exitButton);
+
+        playButton.addActionListener(e -> {
+            this.setVisible(false); 
+        });
+
 
         this.setContentPane(backgroundPanel);
         this.setVisible(true);

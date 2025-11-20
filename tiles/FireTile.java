@@ -1,10 +1,12 @@
 package tiles;
 
+import javax.swing.ImageIcon;
+
 public class FireTile extends Tiles {
     
     public FireTile() {
         super('F');
-        // will add sprite when GUI is implemented
+        sprite = (new ImageIcon("images/FireTile.png"));
     }
 
     @Override

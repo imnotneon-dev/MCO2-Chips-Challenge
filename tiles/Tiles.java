@@ -8,22 +8,16 @@ package tiles;
  * This class works with the Chip class, Inventory class, Maps class, Doors class as it handles the movement and interaction and collision of chip to special and blank tiles
  * @author Jenrick Lim, Ryan Malapitan (S16)
  */
+
+import items.*;
+import game.*;
+import javax.swing.ImageIcon;
+
 public abstract class Tiles {
 
-    public static final char BLANK = ' ';
-    public static final char WATER = 'W';
-    public static final char FIRE = 'F';
-    public static final char WALL = 'X';
-    public static final char EXIT = 'E';
-    public static final char FORCE_UP = '^';
-    public static final char FORCE_DOWN = 'v';
-    public static final char FORCE_LEFT = '<';
-    public static final char FORCE_RIGHT = '>';
-
-    /**
-     * Indicates specific type of the tile
-     */
-    protected char symbol;
+    private final char symbol;
+    private Item itemOnTile;  
+    protected ImageIcon sprite;
 
     public Tiles(char symbol) {
         this.symbol = symbol;
@@ -33,15 +27,33 @@ public abstract class Tiles {
         return symbol;
     }
 
+    public void setItem(Item item) {
+        this.itemOnTile = item;
+    }
+
+    public Item getItem() {
+        return itemOnTile;
+    }
+
     public boolean isWalkable(Inventory inv, int requiredChips) {
         return true;
+
+    public void onStep(Chip chip, Maps map) {
+        // if (itemOnTile != null) {
+        //     chip.getInventory().addItem(itemOnTile); // add to inventory
+        //     itemOnTile = null; // remove from map
+        // }
     }
 
-    public boolean isCollectible() {
-        return false;
-    }
-
-    public void onStep(Chip chip, Maps map) {}
+    // public static final char BLANK = ' ';
+    // public static final char WATER = 'W';
+    // public static final char FIRE = 'F';
+    // public static final char WALL = 'X';
+    // public static final char EXIT = 'E';
+    // public static final char FORCE_UP = '^';
+    // public static final char FORCE_DOWN = 'v';
+    // public static final char FORCE_LEFT = '<';
+    // public static final char FORCE_RIGHT = '>';
     
     // /**
     //  * Constructor for the Tiles class with specified tile type

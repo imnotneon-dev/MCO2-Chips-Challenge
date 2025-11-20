@@ -1,10 +1,12 @@
 package tiles;
 
+import javax.swing.ImageIcon;
+
 public class WaterTile extends Tiles {
     
     public WaterTile() {
         super('W');
-        // will add sprite when GUI is implemented
+        sprite = new ImageIcon("images/WaterTile.png");
     }
 
     @Override

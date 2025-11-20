@@ -1,27 +1,20 @@
 package tiles;
 
-public class ForceTile extends Tiles {
+import javax.swing.ImageIcon;
+
+public class ForceDownTile extends Tiles {
     private char direction;
 
-    public ForceTile(char direction) {
+    public ForceDownTile(char direction) {
         super(direction);
         this.direction = direction;
+        sprite = new ImageIcon("images/ForceDownTile.png");
     }
 
     public char getDirection() {
         return direction;
     }
 
-    @Override
-    public boolean onStep(Chip chip, Maps map) {
-        switch (direction) {
-            case '^': chip.forceMoveUp(map); break;
-            case 'v': chip.forceMoveDown(map); break;
-            case '<': chip.forceMoveLeft(map); break;
-            case '>': chip.forceMoveRight(map); break;
-        }
-        return true;
-    }
 
     // or we put the old logic
     /*

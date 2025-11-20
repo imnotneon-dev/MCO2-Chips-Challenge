@@ -1,10 +1,12 @@
 package tiles;
 
+import javax.swing.ImageIcon;
+
 public class WallTile extends Tiles {
     
     public WallTile() {
         super('X');
-        // will add sprite when GUI is implemented
+        sprite = new ImageIcon("images/WallTile.png");
     }
 
     @Override
