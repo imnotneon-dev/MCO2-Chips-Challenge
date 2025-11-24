@@ -34,13 +34,14 @@ public abstract class Tiles {
 
     public boolean isWalkable(Inventory inv, int requiredChips) {
         return true;
+    }
 
-    public void onStep(Chip chip, Maps map) {
+    public abstract void onStep(Chip chip, Maps map);
         // if (itemOnTile != null) {
         //     chip.getInventory().addItem(itemOnTile); // add to inventory
         //     itemOnTile = null; // remove from map
         // }
-    }
+    
 
     // public static final char BLANK = ' ';
     // public static final char WATER = 'W';
