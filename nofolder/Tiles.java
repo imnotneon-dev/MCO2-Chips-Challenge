@@ -36,12 +36,12 @@ public abstract class Tiles {
         return true;
     }
 
-    public abstract void onStep(Chip chip, Maps map);
+    public void onStep(Chip chip, Maps map){;
         // if (itemOnTile != null) {
         //     chip.getInventory().addItem(itemOnTile); // add to inventory
         //     itemOnTile = null; // remove from map
         // }
-    
+    }
 
     // public static final char BLANK = ' ';
     // public static final char WATER = 'W';
