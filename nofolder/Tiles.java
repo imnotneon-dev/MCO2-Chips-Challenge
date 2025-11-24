@@ -12,11 +12,15 @@ import javax.swing.ImageIcon;
 
 public abstract class Tiles {
 
-    private final char symbol;
+    private char symbol;
     private Item itemOnTile;  
     protected ImageIcon sprite;
 
     public Tiles(char symbol) {
+        this.symbol = symbol;
+    }
+
+    public void setTiles(char symbol) {
         this.symbol = symbol;
     }
 
@@ -30,6 +34,10 @@ public abstract class Tiles {
 
     public Item getItem() {
         return itemOnTile;
+    }
+
+    public ImageIcon getSprite() {
+        return sprite;
     }
 
     public boolean isWalkable(Chip chip, Maps map, Inventory inv, int requiredChips) {

@@ -36,7 +36,7 @@ public class Display {
 
             switch (choice) {
                 case 1:
-                    controller.startGame(); 
+                    //controller.startGame(); 
                     break;
                 case 2:
                     showInstructions();
