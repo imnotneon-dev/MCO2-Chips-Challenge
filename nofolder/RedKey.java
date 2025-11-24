@@ -9,7 +9,6 @@ public class RedKey extends Tiles {
 
     @Override
     public boolean isWalkable(Chip chip, Maps map, Inventory inv, int requiredChips) {
-        inv.addRedKey();
         return true;
     }
 }

@@ -9,7 +9,6 @@ public class BlueKey extends Tiles {
 
     @Override
     public boolean isWalkable(Chip chip, Maps map, Inventory inv, int requiredChips) {
-        inv.addBlueKey();
         return true;
     }
 }

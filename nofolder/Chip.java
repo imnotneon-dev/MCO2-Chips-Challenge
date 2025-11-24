@@ -1,3 +1,5 @@
+import javax.swing.ImageIcon;
+
 /** 
  * Chip Class
  * 
@@ -10,7 +12,7 @@
  * This class interacts with other classes like Maps, Tiles, Doors, and Inventory to provide the simulation of the gameplay
  * @author Jenrick Lim, Ryan Malapitan (S16)
 */
-public class Chip {
+public class Chip extends Tiles {
 
     /**
      *  The '@' character represents Chip / Player in the game 
@@ -40,7 +42,7 @@ public class Chip {
     /** 
      * Stores the tile below Chip to ensure fire, water, force tiles will not disappear after Chip steps on them 
      */
-    private char currentTileBelow = Tiles.BLANK;
+    private char currentTileBelow = ' '; // Blank tile
     
     /** 
      * Constructor of Chip Class, creates a new Chip that accepts the starting position. 
@@ -49,10 +51,24 @@ public class Chip {
      * @param startY - the starting y-coordinate
      */
     public Chip(int startX, int startY) {
+        super(CHIP); // Call Tiles constructor with '@' symbol
         this.x = startX;
         this.y = startY;
         this.alive = true;
-        this.INVENTORY = new Inventory(); 
+        this.INVENTORY = new Inventory();
+        this.currentTileBelow = ' '; // Start with blank tile below
+        this.sprite = new ImageIcon("Chip.png"); // Set the sprite
+    }
+
+    /** 
+     * Implement the abstract isWalkable method from Tiles
+     * Since Chip is the player, this determines if the player can walk on other tiles
+     * For the Chip tile itself, it should not be walkable by other entities
+     */
+    @Override
+    public boolean isWalkable(Chip chip, Maps map, Inventory inv, int requiredChips) {
+        // Chip tile itself is not walkable (other entities can't walk through the player)
+        return false;
     }
 
     /** 
@@ -83,109 +99,89 @@ public class Chip {
                 return "invalid";
         }
 
-        if (!map.inBounds(newX, newY))
+        // Check if move is within bounds
+        if (!map.inBounds(newX, newY)) {
             return "blocked";
+        }
 
-        char tile = map.getTile(newX, newY);
+        // Get the target tile object for interaction
+        Tiles targetTile = map.getTileObject(newX, newY);
+        
+        // Use the tile's isWalkable method to check if movement is allowed
+        if (!targetTile.isWalkable(this, map, INVENTORY, map.getRequiredChips())) {
+            return "blocked";
+        }
 
-        Doors door = new Doors(tile); 
-        if (door.isDoor(tile)) {
-            if (door.unlockDoor(INVENTORY, tile)) {
-                map.setTile(newX, newY, Tiles.BLANK);
-                tile = Tiles.BLANK;
+        char targetTileType = targetTile.getSymbol();
+
+        // Handle exit tile
+        if (targetTileType == TileRegistry.EXIT) {
+            if (INVENTORY.getChips() >= map.getRequiredChips()) {
+                // Move to exit position first
+                map.setTile(x, y, currentTileBelow);
+                x = newX;
+                y = newY;
+                currentTileBelow = targetTileType;
+                map.setTile(x, y, CHIP);
+                return "exit";
             } else {
-                return "blocked";
+                return "blocked"; // Not enough chips
             }
         }
 
-        if (tile == Tiles.EXIT) {
-            if (INVENTORY.getChips() >= map.getRequiredChips()) return "exit";
-            else return "blocked";
+        // Handle collectible items
+        if (isCollectible(targetTileType)) {
+            collect(targetTileType);
+            // Remove the collectible from the map after collection
+            map.setTile(newX, newY, ' ');
+            targetTileType = ' '; // Now it's blank after collection
         }
 
-        if (Tiles.isWalkable(tile, INVENTORY, map.getRequiredChips())) {
-            map.setTile(x, y, getCurrentTileBelow());
+        // Move the player
+        map.setTile(x, y, currentTileBelow); // Restore previous tile
+        x = newX;
+        y = newY;
+        currentTileBelow = targetTileType; // Remember what's under us now
+        map.setTile(x, y, CHIP); // Place player at new position
 
-            x = newX;
-            y = newY;
+        // Handle hazard tiles (fire, water) - the tile's isWalkable method should handle this
+        // If we reached here, the tile is walkable, so just check if it's hazardous
+        handleHazardTile(targetTileType);
+        if (!alive) {
+            return "died";
+        }
 
-            setCurrentTileBelow(tile);
+        return "moved";
+    }
 
-            if (Tiles.isCollectible(tile)) {
-                switch (tile) {
-                    case Inventory.CHIP: 
-                        INVENTORY.addChips(); 
-                        break;
-                    case Inventory.RED_KEY: 
-                        INVENTORY.addRedKey(); 
-                        break;
-                    case Inventory.BLUE_KEY: 
-                        INVENTORY.addBlueKey();
-                        break;
-                    case Inventory.FIRE_BOOTS:
-                        INVENTORY.addFireBoots(); 
-                        break;
-                    case Inventory.FLIPPERS:
-                        INVENTORY.addFlippers();
-                        break;
+    /**
+     * Check if a tile type is collectible
+     */
+    private boolean isCollectible(char tileType) {
+        return tileType == '#' || // Chip item
+               tileType == 'r' || // Red key
+               tileType == 'b' || // Blue key
+               tileType == 'L' || // Fire boots
+               tileType == 'F' || // Flippers
+               tileType == 'Q';   // Ice Skates
+    }
+
+    /**
+     * Handle hazard tiles that might kill the player
+     */
+    private void handleHazardTile(char tileType) {
+        switch (tileType) {
+            case 'W': // Water
+                if (!INVENTORY.hasFlippers()) {
+                    die();
                 }
-                setCurrentTileBelow(Tiles.BLANK);
-                map.setTile(x, y, Tiles.BLANK);
-            }
-
-            map.setTile(x, y, Chip.CHIP);
-
-            if (Tiles.isForceTile(tile)) {
-                Tiles.applyForce(this, map);
-            }
-
-            if (isAlive())
-                return "moved";
-            else
-                return "died";
+                break;
+            case 'F': // Fire
+                if (!INVENTORY.hasFireBoots()) {
+                    die();
+                }
+                break;
         }
-
-        if (tile == Tiles.WATER) {
-            if (INVENTORY.hasFlippers()) {
-                map.setTile(x, y, getCurrentTileBelow());
-                x = newX; 
-                y = newY;
-                setCurrentTileBelow(tile);
-                map.setTile(x, y, Chip.CHIP);
-                return "moved";
-            } else {
-                map.setTile(x, y, getCurrentTileBelow());
-                x = newX; 
-                y = newY;
-                setCurrentTileBelow(tile);
-                map.setTile(x, y, Chip.CHIP);
-                die();
-                map.setTile(x, y, tile); 
-                return "died";
-            }
-        }
-
-        if (tile == Tiles.FIRE) {
-            if (INVENTORY.hasFireBoots()) {
-                map.setTile(x, y, getCurrentTileBelow());
-                x = newX; 
-                y = newY;
-                setCurrentTileBelow(tile);
-                map.setTile(x, y, Chip.CHIP);
-                return "moved";
-            } else {
-                map.setTile(x, y, getCurrentTileBelow());
-                x = newX; 
-                y = newY;
-                setCurrentTileBelow(tile);
-                map.setTile(x, y, Chip.CHIP);
-                die();
-                map.setTile(x, y, tile);
-                return "died";
-            }
-        }
-
-        return "blocked";
     }
 
     /**
@@ -194,19 +190,19 @@ public class Chip {
      */
     public void collect(char item) {
         switch(item) {
-            case Inventory.CHIP:
-                INVENTORY.addChips();;
+            case '#': // Chip item
+                INVENTORY.addChips();
                 break;
-            case Inventory.RED_KEY:
-                INVENTORY.addRedKey();;
+            case 'r': // Red key
+                INVENTORY.addRedKey();
                 break;
-            case Inventory.BLUE_KEY:
+            case 'b': // Blue key
                 INVENTORY.addBlueKey();
                 break;
-            case Inventory.FIRE_BOOTS:
+            case 'L': // Fire boots
                 INVENTORY.addFireBoots();
                 break;
-            case Inventory.FLIPPERS:
+            case 'F': // Flippers
                 INVENTORY.addFlippers();
                 break;
         }
@@ -298,4 +294,10 @@ public class Chip {
         this.currentTileBelow = tile;
     }
 
+    /**
+     * Get the sprite for rendering
+     */
+    public ImageIcon getSprite() {
+        return sprite;
+    }
 }
