@@ -11,7 +11,7 @@ public class MyFrame extends JFrame {
 
     private JButton playButton, exitButton;
     private BufferedImage backgroundImage;
-
+    public JPanel mapPanel = new MapPanel(Levels.generateMap1());
     public MyFrame() {
         this.setTitle("Chips Challenge");
         this.setSize(700, 700);
@@ -53,9 +53,17 @@ public class MyFrame extends JFrame {
         backgroundPanel.add(exitButton);
 
         playButton.addActionListener(e -> {
-            this.setVisible(false); 
+            this.setContentPane(mapPanel); // Switch to the game map
+            this.revalidate();
+            this.repaint();
         });
 
+        this.setContentPane(backgroundPanel);
+        this.setVisible(true);
+
+        // playButton.addActionListener(e -> mapPanel) {
+        //     this.setVisible(false); 
+        // };
 
         this.setContentPane(backgroundPanel);
         this.setVisible(true);
