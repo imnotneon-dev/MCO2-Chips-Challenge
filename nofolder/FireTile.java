@@ -4,17 +4,16 @@ public class FireTile extends Tiles {
     
     public FireTile() {
         super('F');
-        sprite = (new ImageIcon("images/FireTile.png"));
+        sprite = (new ImageIcon("FireTile.png"));
     }
 
     @Override
-    public boolean isWalkable(Inventory inv, int requiredChips) {
-        return inv.hasFireBoots();
+    public boolean isWalkable(Chip chip, Maps map, Inventory inv, int requiredChips) {
+        if(inv.hasFireBoots())
+            return true;
+        else {
+            chip.die();
+            return false;
+        }
     }
-
-    @Override
-    public void onStep(Chip chip, Maps map) {
-        chip.die();
-    }
-
 }
