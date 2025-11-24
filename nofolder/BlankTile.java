@@ -1,4 +1,4 @@
-package tiles;
+import javax.swing.ImageIcon;
 
 public class BlankTile extends Tiles {
     
