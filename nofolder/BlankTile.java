@@ -6,5 +6,4 @@ public class BlankTile extends Tiles {
         super(' ');
         sprite = (new ImageIcon("images/BlankTile.png"));
     }
-
 }
