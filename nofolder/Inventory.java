@@ -27,6 +27,8 @@ public class Inventory {
      */
     private boolean hasFireBoots;
 
+    private boolean hasIceSkates;
+
     /**
      * Currently set to 0 upon starting a game until chip finds one and enough to unlock the exit of the level
      */
@@ -57,12 +59,15 @@ public class Inventory {
     */
     public static final char FIRE_BOOTS = 'L';
 
+    public static final char ICE_SKATES = 'Q';
+
     /**
      * Constructor for the Inventory class that automatically sets the inventory to fire boots and flippers to false upon the start of the game
      */
     public Inventory() {
         hasFireBoots = false;
         hasFlippers = false;
+        hasIceSkates = false;
     }
 
     /**
@@ -91,6 +96,10 @@ public class Inventory {
     */
     public void addFireBoots() {
         hasFireBoots = true;
+    }
+
+    public void addIceSkates() {
+        hasIceSkates = true;
     }
 
     /**
@@ -134,6 +143,10 @@ public class Inventory {
     */
     public boolean hasFireBoots() {
         return hasFireBoots;
+    }
+
+    public boolean hasIceSkates() {
+        return hasIceSkates;
     }
 
     /**
@@ -185,6 +198,7 @@ public class Inventory {
         blueKeys = 0;
         hasFlippers = false;
         hasFireBoots = false;
+        hasIceSkates = false;
         chips = 0;
     }
 
