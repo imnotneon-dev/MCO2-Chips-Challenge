@@ -4,10 +4,16 @@ public class IceTile extends Tiles {
     
     public IceTile() {
         super('I');
-        sprite = new ImageIcon("images/ForceTileRight.png");
+        sprite = new ImageIcon("IceTile.png");
     }
 
-    public void onStep(Chip chip, Maps map) {
-        chip.slide(map);
+    @Override
+    public boolean isWalkable(Chip chip, Maps map, Inventory inv, int requiredChips) {
+    if(inv.hasIceSkates())
+            return true;
+        else {
+            chip.slide();
+            return false;
+        }
     }
 }
