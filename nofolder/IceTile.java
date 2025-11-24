@@ -12,7 +12,7 @@ public class IceTile extends Tiles {
     if(inv.hasIceSkates())
             return true;
         else {
-            chip.slide();
+            //chip.slide(); to be implemented
             return false;
         }
     }
