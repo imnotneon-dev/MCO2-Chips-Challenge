@@ -1,5 +1,3 @@
-package tiles;
-
 import javax.swing.ImageIcon;
 
 public class FireTile extends Tiles {
