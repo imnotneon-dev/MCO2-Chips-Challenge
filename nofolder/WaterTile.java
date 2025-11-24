@@ -4,17 +4,16 @@ public class WaterTile extends Tiles {
     
     public WaterTile() {
         super('W');
-        sprite = new ImageIcon("images/WaterTile.png");
+        sprite = new ImageIcon("WaterTile.png");
     }
 
     @Override
-    public boolean isWalkable(Inventory inv, int requiredChips) {
-        return inv.hasFlippers();
+    public boolean isWalkable(Chip chip, Maps map, Inventory inv, int requiredChips) {
+        if(inv.hasFlippers())
+            return true;
+        else {
+            chip.die();
+            return false;
+        }
     }
-
-    @Override
-    public void onStep(Chip chip, Maps map) {
-        chip.die();
-    }
-
 }
