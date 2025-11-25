@@ -58,7 +58,7 @@ public class Maps {
 
     public char[][] getMap() {
         char[][] charMap = new char[tiles.length][tiles[0].length];
-        Chip player = new Chip(0, 0); // get player reference from controller
+        Chip player = new Chip(-1, -1); // get player reference from controller
         for (int y = 0; y < tiles.length; y++) {
         for (int x = 0; x < tiles[y].length; x++) {
             // If this is the player position, return what's actually under the player
