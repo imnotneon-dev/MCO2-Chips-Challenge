@@ -48,6 +48,12 @@ public class NextLevel {
         return currentLevel;
     }
 
+    public void setCurrentLevel(int level) {
+        if (level >= 0 && level < levels.length) {
+            this.currentLevel = level;
+        }
+    }
+
     /**
      * Accepts the collected chips of the player and decides if the player gets to pass or not.
      * @param collectedChips - current collection of chips by the player
@@ -70,5 +76,9 @@ public class NextLevel {
             return true;
         }
         return false; 
+    }
+
+    public boolean getMaxLevel() {
+        return (currentLevel == 2);
     }
 }

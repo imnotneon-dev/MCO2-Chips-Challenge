@@ -132,9 +132,22 @@ public class Controller {
             }
         }
     }
+    
+    public void setStartingLevel(int levelIndex) {
+    if (levelIndex >= 0 && levelIndex < levels.length) {
+        nextLevel.setCurrentLevel(levelIndex);
+        currentMap = nextLevel.getCurrentMap();
+        chip = new Chip(currentMap.getStartX(), currentMap.getStartY());
+        resetGameState();
+        countTotalChips();
+        initializeEnemies();
+        }
+    }
 
     public void advanceLevel() {
-        if (levelComplete && nextLevel.advance()) {
+        if(getMaxLevel()){
+            returnToMainMenu();
+        } else if (levelComplete && nextLevel.advance()) {
             currentMap = nextLevel.getCurrentMap();
             chip.setX(currentMap.getStartX());
             chip.setY(currentMap.getStartY());
@@ -253,6 +266,7 @@ public class Controller {
     public boolean hasFireBoots() { return chip.getInventory().hasFireBoots(); }
     public boolean hasIceSkates() { return chip.getInventory().hasIceSkates(); }
     public boolean isLevelComplete() { return levelComplete; }
+    public boolean getMaxLevel() { return nextLevel.getMaxLevel(); }
     public boolean isPlayerAlive() { return playerAlive; }
     public int getCurrentLevelIndex() { return nextLevel.getCurrentLevel(); }
     public ArrayList<Enemy> getEnemies() { return enemies;}

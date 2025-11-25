@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class MapPanel extends JPanel {
@@ -18,6 +19,12 @@ public class MapPanel extends JPanel {
         setPreferredSize(new Dimension(700, 700));
         setupKeyListener();
         setFocusable(true);
+
+        this.setLayout(null);
+
+        JButton muteButton = SoundManager.createMuteButton();
+        muteButton.setBounds(630, 50, 50, 50); 
+        this.add(muteButton);
     }
 
     private void calculateTileSize() {
@@ -64,9 +71,13 @@ public class MapPanel extends JPanel {
             }
 
             private void handleEscapeKey() {
-            if (controller.isLevelComplete()) {
-                controller.advanceLevel();
-                repaint();
+                if (controller.isLevelComplete()) {
+                    if (controller.getMaxLevel()) {
+                        controller.returnToMainMenu();
+                    } else {
+                        controller.advanceLevel();
+                        repaint();
+                    }
             } else if (!controller.isPlayerAlive()) {
                 controller.resetLevel();
                 repaint();
@@ -133,26 +144,69 @@ public class MapPanel extends JPanel {
         g2.setFont(new Font("Segoe UI Emoji", Font.BOLD, 20));
 
         drawOutlinedText(g2, "Level: " + (controller.getCurrentLevelIndex() + 1), 10, 30, Color.WHITE);
-        drawOutlinedText(g2, "Chips: " + controller.getChipsCollected() + "/" + controller.getTotalChips(), 10, 60, Color.WHITE);
+        int chipsTextY = 60;
+        int iconSize = 26;
+        int chipSpriteX = 10;
+        int chipSpriteY = chipsTextY - iconSize + 5;
+        
+        Tiles chipTile = controller.getTileForChar('#');
+        if (chipTile != null && chipTile.getSprite() != null) {
+            g2.drawImage(chipTile.getSprite().getImage(), chipSpriteX, chipSpriteY, iconSize, iconSize, this);
+        }
+        int chipsTextX = chipSpriteX + iconSize + 5; 
+        drawOutlinedText(g2, "Chips: " + controller.getChipsCollected() + "/" + controller.getTotalChips(), chipsTextX, chipsTextY, Color.WHITE);
         drawOutlinedText(g2, "ESC - Main Menu", 500, 30, Color.WHITE);
+
+        int iconY = 90;
         
         if (controller.hasRedKey()) {
-            drawOutlinedText(g2, "Red Key: ✓", 10, 90, Color.WHITE);
+            Tiles redKeyTile = controller.getTileForChar('r');
+            if (redKeyTile != null && redKeyTile.getSprite() != null) {
+                g2.drawImage(redKeyTile.getSprite().getImage(), 10, iconY - iconSize, iconSize, iconSize, this);
+            }
+            drawOutlinedText(g2, "Red Key", 40, iconY, Color.WHITE);
+            iconY += 30;
         }
         if (controller.hasBlueKey()) {
-            drawOutlinedText(g2, "Blue Key: ✓", 10, 120, Color.WHITE);
+            Tiles blueKeyTile = controller.getTileForChar('b');
+            if (blueKeyTile != null && blueKeyTile.getSprite() != null) {
+                g2.drawImage(blueKeyTile.getSprite().getImage(), 10, iconY - iconSize, iconSize, iconSize, this);
+            }
+            drawOutlinedText(g2, "Blue Key", 40, iconY, Color.WHITE);
+            iconY += 30;
         }
         if (controller.hasFlippers()) {
-            drawOutlinedText(g2, "Flippers: ✓", 10, 150, Color.WHITE);
+            Tiles flippersTile = controller.getTileForChar('_');
+            if (flippersTile != null && flippersTile.getSprite() != null) {
+                g2.drawImage(flippersTile.getSprite().getImage(), 10, iconY - iconSize, iconSize, iconSize, this);
+            }
+            drawOutlinedText(g2, "Flippers", 40, iconY, Color.WHITE);
+            iconY += 30;
         }
         if (controller.hasFireBoots()) {
-            drawOutlinedText(g2, "Fire Boots: ✓", 10, 180, Color.WHITE);
+            Tiles fireBootsTile = controller.getTileForChar('L');
+            if (fireBootsTile != null && fireBootsTile.getSprite() != null) {
+                g2.drawImage(fireBootsTile.getSprite().getImage(), 10, iconY - iconSize, iconSize, iconSize, this);
+            }
+            drawOutlinedText(g2, "Fire Boots", 40, iconY, Color.WHITE);
+            iconY += 30;
         }
         if (controller.hasIceSkates()) {
-            drawOutlinedText(g2, "Ice Skates: ✓", 10, 210, Color.WHITE);
+            Tiles iceSkatesTile = controller.getTileForChar('Q');
+            if (iceSkatesTile != null && iceSkatesTile.getSprite() != null) {
+                g2.drawImage(iceSkatesTile.getSprite().getImage(), 10, iconY - iconSize, iconSize, iconSize, this);
+            }
+            drawOutlinedText(g2, "Ice Skates", 40, iconY, Color.WHITE);
+            iconY += 30;
         }
         if (controller.hasTeleportationDevice()) {
-            drawOutlinedText(g2, "Teleportation Device: ✓", 10, 240, Color.WHITE);
+            Tiles teleportationDeviceTile = controller.getTileForChar('t');
+            if (teleportationDeviceTile != null && teleportationDeviceTile.getSprite() != null) {
+                g2.drawImage(teleportationDeviceTile.getSprite().getImage(), 10, iconY - iconSize, iconSize, iconSize, this);
+            }
+            drawOutlinedText(g2, "Teleportation", 40, iconY, Color.WHITE);
+            drawOutlinedText(g2, "Device", 45, iconY + 25, Color.WHITE);
+            iconY += 30;
         }
 
         if (controller.isLevelComplete()) {
