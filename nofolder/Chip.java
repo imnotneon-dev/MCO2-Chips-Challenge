@@ -211,7 +211,6 @@ public class Chip extends Tiles {
     }
 
     public boolean tryMove(int dx, int dy, Maps map) {
-
         int newX = x + dx;
         int newY = y + dy;
 
@@ -224,6 +223,12 @@ public class Chip extends Tiles {
 
         char nextSymbol = next.getSymbol();
 
+        if (isCollectible(nextSymbol)) {
+            collect(nextSymbol);
+            nextSymbol = ' ';
+        }
+
+        // Update map and position
         map.setTile(x, y, currentTileBelow); 
         x = newX;
         y = newY;
@@ -235,9 +240,6 @@ public class Chip extends Tiles {
 
         return true;
     }
-
-
-
 
     /**
      * Set chip's attribute "alive" to false, killing him in the game

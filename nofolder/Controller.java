@@ -178,8 +178,13 @@ public class Controller {
 
     public static void applyForce(Chip chip, Maps map) {
         while (true) {
+            char tileChar = chip.getCurrentTileBelow();
             Tiles tile = map.getTileObject(chip.getX(), chip.getY());
-
+            
+            if (tile.getSymbol() == '@') {
+                tile = TileRegistry.getInstance().getTile(tileChar);
+            }
+            
             if (!tile.applyForce(chip, map))
                 break;
         }
