@@ -16,6 +16,7 @@ public class MyFrame extends JFrame {
     private MapPanel gamePanel;
     private Controller gameController;
     private BufferedImage backgroundImage;
+    private JButton muteButton;
 
     public MyFrame() {
         this.setTitle("Chips Challenge");
@@ -53,18 +54,24 @@ public class MyFrame extends JFrame {
         mainMenuPanel.setLayout(null);
 
         // Buttons
-        JButton playButton = new JButton("Play");
+        JButton playButton = new JButton("Play Level 1");
+        JButton selectLevelButton = new JButton("Select Level");
         JButton instructionsButton = new JButton("Instructions");
         JButton exitButton = new JButton("Exit");
+        JButton muteButton = SoundManager.createMuteButton();
+        mainMenuPanel.add(muteButton);
 
-        playButton.setBounds(245, 300, 200, 50);
-        instructionsButton.setBounds(245, 375, 200, 50);
-        exitButton.setBounds(245, 450, 200, 50);
+        playButton.setBounds(190, 350, 300, 60);
+        selectLevelButton.setBounds(190, 420, 300, 60);
+        instructionsButton.setBounds(190, 490, 300, 60);
+        exitButton.setBounds(190, 560, 300, 60);
 
         // Style buttons (your existing font and cursor code)
-
+        Font buttonFont = new Font("Courier New", Font.BOLD, 18);
         // Play button - start game
-        playButton.addActionListener(e -> startGame());
+        playButton.addActionListener(e -> startGame(0));
+
+        selectLevelButton.addActionListener(e -> showLevelSelector());
 
         // Instructions button
         instructionsButton.addActionListener(e -> showInstructions());
@@ -72,20 +79,90 @@ public class MyFrame extends JFrame {
         // Exit button
         exitButton.addActionListener(e -> System.exit(0));
 
+        playButton.setFont(buttonFont);
+        selectLevelButton.setFont(buttonFont);
+        instructionsButton.setFont(buttonFont);
+        exitButton.setFont(buttonFont);
+
         mainMenuPanel.add(playButton);
+        mainMenuPanel.add(selectLevelButton);
         mainMenuPanel.add(instructionsButton);
         mainMenuPanel.add(exitButton);
     }
 
-    public void startGame() {
+    public void startGame(int startingLevel) {
         gameController = new Controller();
-        gameController.setMainMenu(this); // Pass reference to main menu
+        gameController.setMainMenu(this);
+        gameController.setStartingLevel(startingLevel); // Set the starting level
         
         gamePanel = new MapPanel(gameController);
         this.setContentPane(gamePanel);
         this.pack();  
         this.revalidate();
         gamePanel.requestFocusInWindow();
+    }
+
+        private void showLevelSelector() {
+        JPanel levelSelectPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (backgroundImage != null) {
+                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
+        levelSelectPanel.setLayout(null);
+
+        // Title
+        JLabel titleLabel = new JLabel("SELECT LEVEL", JLabel.CENTER);
+        titleLabel.setBounds(35, 300, 600, 40);
+        titleLabel.setFont(new Font("Courier New", Font.BOLD, 32));
+        titleLabel.setForeground(java.awt.Color.WHITE);
+        levelSelectPanel.add(titleLabel);
+
+        // Add mute button
+        JButton muteButton = SoundManager.createMuteButton();
+        levelSelectPanel.add(muteButton);
+
+        // Level buttons
+        JButton level1Button = new JButton("Level 1 - Beginner");
+        JButton level2Button = new JButton("Level 2 - Intermediate");
+        JButton level3Button = new JButton("Level 3 - Advanced");
+        JButton backButton = new JButton("Back to Main Menu");
+
+        // Position level buttons
+        level1Button.setBounds(190, 350, 300, 60);
+        level2Button.setBounds(190, 420, 300, 60);
+        level3Button.setBounds(190, 490, 300, 60);
+        backButton.setBounds(240, 560, 200, 50);
+
+        Font levelFont = new Font("Courier New", Font.BOLD, 18);
+        level1Button.setFont(levelFont);
+        level2Button.setFont(levelFont);
+        level3Button.setFont(levelFont);
+        backButton.setFont(levelFont);
+
+        java.awt.Cursor handCursor = new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR);
+        level1Button.setCursor(handCursor);
+        level2Button.setCursor(handCursor);
+        level3Button.setCursor(handCursor);
+        backButton.setCursor(handCursor);
+
+        // Level button actions
+        level1Button.addActionListener(e -> startGame(0)); // Level 1
+        level2Button.addActionListener(e -> startGame(1)); // Level 2
+        level3Button.addActionListener(e -> startGame(2)); // Level 3
+        backButton.addActionListener(e -> returnToMainMenu());
+
+        levelSelectPanel.add(level1Button);
+        levelSelectPanel.add(level2Button);
+        levelSelectPanel.add(level3Button);
+        levelSelectPanel.add(backButton);
+
+        this.setContentPane(levelSelectPanel);
+        this.revalidate();
+        this.repaint();
     }
 
     private JPanel createInstructionsPanel() {
@@ -101,11 +178,13 @@ public class MyFrame extends JFrame {
     instructionsPanel.setLayout(null);
 
     // Instructions Title
-    JLabel titleLabel = new JLabel("CHIPS CHALLENGE - INSTRUCTIONS", JLabel.CENTER);
-    titleLabel.setBounds(50, 30, 600, 40);
+    JLabel titleLabel = new JLabel("CHIP'S CHALLENGE - INSTRUCTIONS", JLabel.CENTER);
+    titleLabel.setBounds(50, 40, 600, 40);
     titleLabel.setFont(new Font("Courier New", Font.BOLD, 28));
     titleLabel.setForeground(java.awt.Color.WHITE);
     instructionsPanel.add(titleLabel);
+    JButton muteButton = SoundManager.createMuteButton();
+    instructionsPanel.add(muteButton);
 
     // Scrollable Instructions Text Area
     JTextArea instructionsText = new JTextArea();
@@ -160,7 +239,7 @@ public class MyFrame extends JFrame {
     instructionsText.setWrapStyleWord(true);
 
     JScrollPane scrollPane = new JScrollPane(instructionsText);
-    scrollPane.setBounds(50, 80, 600, 350);
+    scrollPane.setBounds(50, 260, 600, 290);
     scrollPane.setBorder(BorderFactory.createLineBorder(java.awt.Color.GRAY));
     scrollPane.getViewport().setOpaque(false);
     scrollPane.setOpaque(false);
@@ -168,7 +247,7 @@ public class MyFrame extends JFrame {
 
     // Back button
     JButton backButton = new JButton("Back to Main Menu");
-    backButton.setBounds(245, 450, 200, 50);
+    backButton.setBounds(245, 560, 200, 50);
     backButton.setFont(new Font("Courier New", Font.BOLD, 18));
     backButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     backButton.addActionListener(e -> returnToMainMenu());
