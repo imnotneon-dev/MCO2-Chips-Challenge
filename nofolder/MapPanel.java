@@ -152,7 +152,7 @@ public class MapPanel extends JPanel {
             drawOutlinedText(g2, "Ice Skates: ✓", 10, 210, Color.WHITE);
         }
         if (controller.hasTeleportationDevice()) {
-            drawOutlinedText(g2, "Teleport Device: ✓", 10, 240, Color.WHITE);
+            drawOutlinedText(g2, "Teleportation Device: ✓", 10, 240, Color.WHITE);
         }
 
         if (controller.isLevelComplete()) {
