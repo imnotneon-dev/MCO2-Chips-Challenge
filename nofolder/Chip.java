@@ -43,6 +43,16 @@ public class Chip extends Tiles {
      * Stores the tile below Chip to ensure fire, water, force tiles will not disappear after Chip steps on them 
      */
     private char currentTileBelow = ' '; // Blank tile
+
+    /**
+     * Stores the last X-move of Chip
+     */
+    private int lastMoveX = 0;
+
+    /**
+     * Stores the last Y-move of Chip
+     */
+    private int lastMoveY = 0;
     
     /** 
      * Constructor of Chip Class, creates a new Chip that accepts the starting position. 
@@ -85,15 +95,23 @@ public class Chip extends Tiles {
         switch (direction) {
             case 'W': 
                 newY--; 
+                lastMoveX = 0;
+                lastMoveY = -1;
                 break;
             case 'A': 
                 newX--; 
+                lastMoveX = -1;
+                lastMoveY = 0;
                 break;
             case 'S': 
                 newY++; 
+                lastMoveX = 0;
+                lastMoveY = 1;
                 break;
             case 'D': 
                 newX++; 
+                lastMoveX = 1;
+                lastMoveY = 0;
                 break;
             default: 
                 return "invalid";
@@ -164,8 +182,9 @@ public class Chip extends Tiles {
                tileType == 'r' || // Red key
                tileType == 'b' || // Blue key
                tileType == 'L' || // Fire boots
-               tileType == 'F' || // Flippers
-               tileType == 'Q';   // Ice Skates
+               tileType == '_' || // Flippers
+               tileType == 'Q' || // Ice Skates
+               tileType == 't';   // Teleporation Device
     }
 
     /**
@@ -207,6 +226,12 @@ public class Chip extends Tiles {
             case 'F': // Flippers
                 INVENTORY.addFlippers();
                 break;
+            case 'Q': // Ice Skates
+                INVENTORY.addIceSkates();
+                break;
+            case 't': // TP Device
+                INVENTORY.addTeleportationDevice();
+                break;
         }
     }
 
@@ -228,10 +253,15 @@ public class Chip extends Tiles {
             nextSymbol = ' ';
         }
 
-        // Update map and position
         map.setTile(x, y, currentTileBelow); 
         x = newX;
         y = newY;
+        
+        if (currentTileBelow == 'I') {
+            lastMoveX = dx;
+            lastMoveY = dy;
+        }
+        
         currentTileBelow = nextSymbol;
         map.setTile(x, y, CHIP); 
 
@@ -246,6 +276,7 @@ public class Chip extends Tiles {
      */
     public void die() {
         alive = false;
+        sprite = new ImageIcon("ChipDead.png");
     }
 
     /**
@@ -253,6 +284,7 @@ public class Chip extends Tiles {
     */
     public void revive() {
         alive = true;
+        sprite = new ImageIcon("Chip.png");
     }
 
     /**
@@ -332,5 +364,18 @@ public class Chip extends Tiles {
      */
     public ImageIcon getSprite() {
         return sprite;
+    }
+
+    /**
+     * Get the last X-coordinate of Chip 
+     */
+    public int getLastMoveX() {
+    return lastMoveX;
+}
+    /**
+     * Get the last Y-coordinate of Chip 
+     */
+    public int getLastMoveY() {
+        return lastMoveY;
     }
 }

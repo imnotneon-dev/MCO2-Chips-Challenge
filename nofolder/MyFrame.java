@@ -21,6 +21,7 @@ public class MyFrame extends JFrame {
         this.setTitle("Chips Challenge");
         this.setSize(700, 700);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
         this.setResizable(false);
         
         loadBackgroundImage();

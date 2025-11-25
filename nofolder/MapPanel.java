@@ -104,9 +104,19 @@ public class MapPanel extends JPanel {
             }
         }
 
+        for (Enemy enemy : controller.getEnemies()) {
+            Tiles enemyTile = controller.getTileForChar('e');
+            if (enemyTile != null && enemyTile.getSprite() != null) {
+                g.drawImage(enemyTile.getSprite().getImage(),
+                    offsetX + enemy.getX() * tileSize,
+                    offsetY + enemy.getY() * tileSize,
+                    tileSize, tileSize, this);
+            }
+        }
+
         Tiles playerTile = controller.getTileForChar('@');
-        if (playerTile != null && playerTile.getSprite() != null) {
-            g.drawImage(playerTile.getSprite().getImage(),
+        if (player.getSprite() != null) {
+            g.drawImage(player.getSprite().getImage(),
                 offsetX + player.getX() * tileSize,
                 offsetY + player.getY() * tileSize,
                 tileSize, tileSize, this);
@@ -141,7 +151,9 @@ public class MapPanel extends JPanel {
         if (controller.hasIceSkates()) {
             drawOutlinedText(g2, "Ice Skates: ✓", 10, 210, Color.WHITE);
         }
-        
+        if (controller.hasTeleportationDevice()) {
+            drawOutlinedText(g2, "Teleport Device: ✓", 10, 240, Color.WHITE);
+        }
 
         if (controller.isLevelComplete()) {
             g2.setFont(new Font("Arial", Font.BOLD, 40));

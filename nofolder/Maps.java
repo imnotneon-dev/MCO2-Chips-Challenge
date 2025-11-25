@@ -10,26 +10,26 @@ public class Maps {
         findStartPosition();
     }
 
-private Tiles[][] createTileMap(char[][] source) {
-    Tiles[][] newTiles = new Tiles[source.length][source[0].length];
-    TileRegistry registry = TileRegistry.getInstance();
-    
-    System.out.println("Creating tile map from source...");
-    
-    for (int y = 0; y < source.length; y++) {
-        for (int x = 0; x < source[y].length; x++) {
-            char originalChar = source[y][x];
-            System.out.println("Source char at (" + x + "," + y + "): '" + originalChar + "'");
-            
-            // Make sure '@' characters are preserved
-            newTiles[y][x] = registry.createTile(originalChar);
-            
-            char createdChar = newTiles[y][x].getSymbol();
-            System.out.println("Created tile at (" + x + "," + y + "): '" + createdChar + "'");
+    private Tiles[][] createTileMap(char[][] source) {
+        Tiles[][] newTiles = new Tiles[source.length][source[0].length];
+        TileRegistry registry = TileRegistry.getInstance();
+        
+        System.out.println("Creating tile map from source...");
+        
+        for (int y = 0; y < source.length; y++) {
+            for (int x = 0; x < source[y].length; x++) {
+                char originalChar = source[y][x];
+                System.out.println("Source char at (" + x + "," + y + "): '" + originalChar + "'");
+                
+                // Make sure '@' characters are preserved
+                newTiles[y][x] = registry.createTile(originalChar);
+                
+                char createdChar = newTiles[y][x].getSymbol();
+                System.out.println("Created tile at (" + x + "," + y + "): '" + createdChar + "'");
+            }
         }
+        return newTiles;
     }
-    return newTiles;
-}
     
 
         public int[] findStartPosition() {

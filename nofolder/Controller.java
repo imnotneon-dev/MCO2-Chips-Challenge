@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+
 public class Controller {
     private Maps[] levels;
     private Maps currentMap;
     private Chip chip;
     private NextLevel nextLevel;
     private MyFrame mainMenu;
+    private ArrayList<Enemy> enemies;
     
     // Game state
     private int chipsCollected = 0;
@@ -30,6 +33,8 @@ public class Controller {
         currentMap = nextLevel.getCurrentMap();
         chip = new Chip(currentMap.getStartX(), currentMap.getStartY());
         countTotalChips();
+        enemies = new ArrayList<>();
+        initializeEnemies();
     }
 
     public void setMainMenu(MyFrame mainMenu) {
@@ -48,6 +53,18 @@ public class Controller {
         // Handle tile interactions
         char currentTile = currentMap.getTile(chip.getX(), chip.getY());
         handleTileInteraction(currentTile);
+
+        // Move all enemies
+        for (Enemy enemy : enemies) {
+            enemy.move(currentMap, chip);
+            
+            // Check if enemy caught player after moving
+            if (enemy.getX() == chip.getX() && enemy.getY() == chip.getY()) {
+                chip.die();
+                playerAlive = false;
+                return;
+            }
+        }
 
         // Check for level completion
         if (moved.equals("exit") && nextLevel.canAdvance(chip.getInventory().getChips())) {
@@ -109,6 +126,10 @@ public class Controller {
                 chip.getInventory().addIceSkates();
                 currentMap.setTile(chip.getX(), chip.getY(), ' ');
             }
+            case 't' -> {
+                chip.getInventory().addTeleportationDevice();
+                currentMap.setTile(chip.getX(), chip.getY(), ' ');
+            }
         }
     }
 
@@ -117,8 +138,10 @@ public class Controller {
             currentMap = nextLevel.getCurrentMap();
             chip.setX(currentMap.getStartX());
             chip.setY(currentMap.getStartY());
+            chip.setCurrentTileBelow(' ');
             resetGameState();
             countTotalChips();
+            initializeEnemies();
         }
     }
 
@@ -126,9 +149,11 @@ public class Controller {
         currentMap = nextLevel.getCurrentMap();
         chip.setX(currentMap.getStartX());
         chip.setY(currentMap.getStartY());
+        chip.setCurrentTileBelow(' ');
         chip.revive();
         resetGameState();
         countTotalChips();
+        initializeEnemies();
     }
 
     private void resetGameState() {
@@ -190,7 +215,31 @@ public class Controller {
         }
     }
 
-    
+    private void initializeEnemies() {
+        enemies.clear();
+        char[][] map = currentMap.getMap();
+        
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++) {
+                if (map[y][x] == 'e') {
+                    // Determine initial direction based on surrounding tiles
+                    int dx = 1, dy = 0;
+                    
+                    // Check if there's a wall to the right, then go left
+                    if (x + 1 >= map[y].length || map[y][x + 1] == 'X') {
+                        dx = -1;
+                    }
+                    
+                    Enemy enemy = new Enemy(x, y, dx, dy);
+                    enemy.setTileBelow(' '); // Assume blank under enemy initially
+                    enemies.add(enemy);
+                    
+                    // Remove 'e' from the actual map since we're tracking it separately
+                    currentMap.setTile(x, y, ' ');
+                }
+            }
+        }
+    }
 
 
     // Getters
@@ -206,6 +255,8 @@ public class Controller {
     public boolean isLevelComplete() { return levelComplete; }
     public boolean isPlayerAlive() { return playerAlive; }
     public int getCurrentLevelIndex() { return nextLevel.getCurrentLevel(); }
+    public ArrayList<Enemy> getEnemies() { return enemies;}
+    public boolean hasTeleportationDevice() { return chip.getInventory().hasTeleportationDevice(); }
     
     // New method to get tile sprite for rendering
 }

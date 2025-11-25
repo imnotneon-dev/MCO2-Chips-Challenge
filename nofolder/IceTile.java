@@ -6,14 +6,20 @@ public class IceTile extends Tiles {
         super('I');
         sprite = new ImageIcon("IceTile.png");
     }
-
+    
     @Override
-    public boolean isWalkable(Chip chip, Maps map, Inventory inv, int requiredChips) {
-    if(inv.hasIceSkates())
-            return true;
-        else {
-            //chip.slide();
+    public boolean applyForce(Chip chip, Maps map) {
+        // If player has ice skates, don't slide
+        if (chip.getInventory().hasIceSkates()) {
             return false;
         }
+
+        // Determine slide direction based on the last move direction
+        // We need to track this in Chip class
+        int dx = chip.getLastMoveX();
+        int dy = chip.getLastMoveY();
+
+        // Try to continue sliding in the same direction
+        return chip.tryMove(dx, dy, map);
     }
 }

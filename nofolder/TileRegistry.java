@@ -23,6 +23,9 @@ public class TileRegistry {
     public static final char FORCE_LEFT = '<';
     public static final char FORCE_RIGHT = '>';
     public static final char ENEMY = 'e';
+    public static final char PURPLE_TELEPORTER = 'P';
+    public static final char GREEN_TELEPORTER = 'G';
+    public static final char TELEPORTATION_DEVICE = 't';
     
     private TileRegistry() {
         initializeTiles();
@@ -56,7 +59,10 @@ public class TileRegistry {
             new ForceDownTile(),
             new ForceLeftTile(),
             new ForceRightTile(),
-            new Enemy()
+            new Enemy(),
+            new PurpleTeleporter(),
+            new GreenTeleporter(),
+            new TeleportationDevice()
         };
         
     }
