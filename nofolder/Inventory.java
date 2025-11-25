@@ -72,6 +72,7 @@ public class Inventory {
         hasFireBoots = false;
         hasFlippers = false;
         hasIceSkates = false;
+        hasTeleportationDevice = false;
     }
 
     /**
