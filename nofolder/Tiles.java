@@ -44,6 +44,10 @@ public abstract class Tiles {
         return true;
     }
 
+    public boolean applyForce(Chip chip, Maps map) {
+        return false;
+    }
+
     //public void onStep(Chip chip, Maps map){};
         // if (itemOnTile != null) {
         //     chip.getInventory().addItem(itemOnTile); // add to inventory

@@ -151,6 +151,8 @@ public class Chip extends Tiles {
             return "died";
         }
 
+        Controller.applyForce(this, map);
+
         return "moved";
     }
 
@@ -207,6 +209,35 @@ public class Chip extends Tiles {
                 break;
         }
     }
+
+    public boolean tryMove(int dx, int dy, Maps map) {
+
+        int newX = x + dx;
+        int newY = y + dy;
+
+        if (!map.inBounds(newX, newY)) return false;
+
+        Tiles next = map.getTileObject(newX, newY);
+
+        if (!next.isWalkable(this, map, INVENTORY, map.getRequiredChips()))
+            return false;
+
+        char nextSymbol = next.getSymbol();
+
+        map.setTile(x, y, currentTileBelow); 
+        x = newX;
+        y = newY;
+        currentTileBelow = nextSymbol;
+        map.setTile(x, y, CHIP); 
+
+        handleHazardTile(nextSymbol);
+        if (!alive) return false;
+
+        return true;
+    }
+
+
+
 
     /**
      * Set chip's attribute "alive" to false, killing him in the game

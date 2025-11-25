@@ -82,6 +82,7 @@ public class MyFrame extends JFrame {
         
         gamePanel = new MapPanel(gameController);
         this.setContentPane(gamePanel);
+        this.pack();  
         this.revalidate();
         gamePanel.requestFocusInWindow();
     }

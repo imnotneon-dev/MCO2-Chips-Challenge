@@ -20,8 +20,12 @@ public class MapPanel extends JPanel {
         char[][] map = controller.getCurrentMap().getMap();
         int rows = map.length;
         int cols = map[0].length;
-        int maxTiles = Math.max(rows, cols);
-        tileSize = 700 / maxTiles;
+        tileSize = 48; // or calculate based on screen
+
+        int width = cols * tileSize;
+        int height = rows * tileSize;
+
+        setPreferredSize(new Dimension(width, height));
     }
 
     private void setupKeyListener() {
@@ -71,37 +75,39 @@ public class MapPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    char[][] map = controller.getCurrentMap().getMap();
-    Chip player = controller.getPlayer();
+        super.paintComponent(g);
+        char[][] map = controller.getCurrentMap().getMap();
+        Chip player = controller.getPlayer();
 
-    // Draw map tiles (but skip the player's current position)
-    for (int row = 0; row < map.length; row++) {
-        for (int col = 0; col < map[row].length; col++) {
-            // Skip drawing the tile where the player is currently standing
-            if (row == player.getY() && col == player.getX()) {
-                continue;
-            }
-            
-            char tileChar = map[row][col];
-            Tiles tile = controller.getTileForChar(tileChar);
-            
-            if (tile != null && tile.getSprite() != null) {
-                g.drawImage(tile.getSprite().getImage(), col * tileSize, row * tileSize, tileSize, tileSize, this);
+        int mapWidth = map[0].length * tileSize;
+        int mapHeight = map.length * tileSize;
+
+        int offsetX = (getWidth() - mapWidth) / 2;
+        int offsetY = (getHeight() - mapHeight) / 2;
+
+        for (int row = 0; row < map.length; row++) {
+            for (int col = 0; col < map[row].length; col++) {
+                if (row == player.getY() && col == player.getX())
+                    continue;
+
+                Tiles tile = controller.getTileForChar(map[row][col]);
+                if (tile != null && tile.getSprite() != null) {
+                    g.drawImage(tile.getSprite().getImage(),
+                        offsetX + col * tileSize,
+                        offsetY + row * tileSize,
+                        tileSize, tileSize, this);
+                }
             }
         }
-    }
-    
-        // Draw player on top
+
         Tiles playerTile = controller.getTileForChar('@');
         if (playerTile != null && playerTile.getSprite() != null) {
-            g.drawImage(playerTile.getSprite().getImage(), 
-                    player.getX() * tileSize, 
-                    player.getY() * tileSize, 
-                    tileSize, tileSize, this);
+            g.drawImage(playerTile.getSprite().getImage(),
+                offsetX + player.getX() * tileSize,
+                offsetY + player.getY() * tileSize,
+                tileSize, tileSize, this);
         }
 
-        // Draw HUD
         drawHUD(g);
     }
 

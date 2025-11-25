@@ -176,6 +176,18 @@ public class Controller {
         }
     }
 
+    public static void applyForce(Chip chip, Maps map) {
+        while (true) {
+            Tiles tile = map.getTileObject(chip.getX(), chip.getY());
+
+            if (!tile.applyForce(chip, map))
+                break;
+        }
+    }
+
+    
+
+
     // Getters
     public Maps getCurrentMap() { return currentMap; }
     public Chip getPlayer() { return chip; }

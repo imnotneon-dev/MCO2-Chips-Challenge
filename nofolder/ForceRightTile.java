@@ -7,6 +7,11 @@ public class ForceRightTile extends Tiles {
         sprite = new ImageIcon("ForceRightTile.png");
     }
 
+    @Override
+    public boolean applyForce(Chip chip, Maps map) {
+        return chip.tryMove(1, 0, map);
+    }
+
     // or we put the old logic
     /*
     public static void applyForce(Chip chip, Maps map) {
