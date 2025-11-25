@@ -18,6 +18,10 @@ public class TileRegistry {
     public static final char FIRE_BOOTS = 'L';
     public static final char FLIPPERS = '_';
     public static final char ICE_SKATES = 'Q';
+    public static final char FORCE_UP = '^';
+    public static final char FORCE_DOWN = 'v';
+    public static final char FORCE_LEFT = '<';
+    public static final char FORCE_RIGHT = '>';
     
     private TileRegistry() {
         initializeTiles();
@@ -46,7 +50,11 @@ public class TileRegistry {
             new FireBoots(),
             new PlayerTile(),
             new Flippers(),
-            new IceSkates()
+            new IceSkates(),
+            new ForceUpTile(),
+            new ForceDownTile(),
+            new ForceLeftTile(),
+            new ForceRightTile()
         };
         
     }

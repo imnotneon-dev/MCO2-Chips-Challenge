@@ -1,16 +1,10 @@
 import javax.swing.ImageIcon;
 
 public class ForceUpTile extends Tiles {
-    private char direction;
 
-    public ForceUpTile(char direction) {
-        super(direction);
-        this.direction = direction;
-        sprite = new ImageIcon("images/ForceUpTile.png");
-    }
-
-    public char getDirection() {
-        return direction;
+    public ForceUpTile() {
+        super('^');
+        sprite = new ImageIcon("ForceUpTile.png");
     }
 
 

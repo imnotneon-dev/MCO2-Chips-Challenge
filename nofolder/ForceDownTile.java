@@ -1,17 +1,12 @@
 import javax.swing.ImageIcon;
 
 public class ForceDownTile extends Tiles {
-    private char direction;
 
-    public ForceDownTile(char direction) {
-        super(direction);
-        this.direction = direction;
-        sprite = new ImageIcon("images/ForceDownTile.png");
+    public ForceDownTile() {
+        super('v');
+        sprite = new ImageIcon("ForceDownTile.png");
     }
 
-    public char getDirection() {
-        return direction;
-    }
 
 
     // or we put the old logic
