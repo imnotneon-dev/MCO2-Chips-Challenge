@@ -1,5 +1,9 @@
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
@@ -20,7 +24,7 @@ public class MapPanel extends JPanel {
         char[][] map = controller.getCurrentMap().getMap();
         int rows = map.length;
         int cols = map[0].length;
-        tileSize = 48; // or calculate based on screen
+        tileSize = 32; 
 
         int width = cols * tileSize;
         int height = rows * tileSize;
@@ -112,34 +116,65 @@ public class MapPanel extends JPanel {
     }
 
     private void drawHUD(Graphics g) {
-        g.setColor(java.awt.Color.BLACK);
-        g.setFont(new java.awt.Font("Segoe UI Emoji", java.awt.Font.BOLD, 20));
-        g.drawString("Level: " + (controller.getCurrentLevelIndex() + 1), 10, 30);
-        g.drawString("Chips: " + controller.getChipsCollected() + "/" + controller.getTotalChips(), 10, 60);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        g.drawString("ESC - Main Menu", 500, 30);
+
+        g2.setFont(new Font("Segoe UI Emoji", Font.BOLD, 20));
+
+        drawOutlinedText(g2, "Level: " + (controller.getCurrentLevelIndex() + 1), 10, 30, Color.WHITE);
+        drawOutlinedText(g2, "Chips: " + controller.getChipsCollected() + "/" + controller.getTotalChips(), 10, 60, Color.WHITE);
+        drawOutlinedText(g2, "ESC - Main Menu", 500, 30, Color.WHITE);
         
         if (controller.hasRedKey()) {
-            g.drawString("Red Key: ✓", 10, 90);
+            drawOutlinedText(g2, "Red Key: ✓", 10, 90, Color.WHITE);
         }
         if (controller.hasBlueKey()) {
-            g.drawString("Blue Key: ✓", 10, 120);
+            drawOutlinedText(g2, "Blue Key: ✓", 10, 120, Color.WHITE);
         }
+        if (controller.hasFlippers()) {
+            drawOutlinedText(g2, "Flippers: ✓", 10, 150, Color.WHITE);
+        }
+        if (controller.hasFireBoots()) {
+            drawOutlinedText(g2, "Fire Boots: ✓", 10, 180, Color.WHITE);
+        }
+        if (controller.hasIceSkates()) {
+            drawOutlinedText(g2, "Ice Skates: ✓", 10, 210, Color.WHITE);
+        }
+        
 
         if (controller.isLevelComplete()) {
-            g.setColor(java.awt.Color.GREEN);
-            g.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 40));
-            g.drawString("LEVEL COMPLETE!", 150, 350);
-            g.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 20));
-            g.drawString("Press ESC to continue", 250, 400);
+            g2.setFont(new Font("Arial", Font.BOLD, 40));
+            drawOutlinedText(g2, "LEVEL COMPLETE!", 150, 350, Color.GREEN);
+            g2.setFont(new Font("Arial", Font.BOLD, 20));
+            drawOutlinedText(g2, "Press ESC to continue", 250, 400, Color.WHITE);
         }
 
         if (!controller.isPlayerAlive()) {
-            g.setColor(java.awt.Color.RED);
-            g.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 40));
-            g.drawString("YOU DIED!", 250, 350);
-            g.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 20));
-            g.drawString("Press ESC to restart", 250, 400);
+            g2.setFont(new Font("Arial", Font.BOLD, 40));
+            drawOutlinedText(g2, "YOU DIED!", 250, 350, Color.RED);
+            g2.setFont(new Font("Arial", Font.BOLD, 20));
+            drawOutlinedText(g2, "Press ESC to restart", 250, 400, Color.WHITE);
         }
     }
+
+    private void drawOutlinedText(Graphics2D g2, String text, int x, int y, Color fillColor) {
+        Font font = g2.getFont();
+        g2.setFont(font);
+        
+        int thickness = Math.max(1, font.getSize() / 10); 
+
+        g2.setColor(Color.BLACK);
+        for (int dx = -thickness; dx <= thickness; dx++) {
+            for (int dy = -thickness; dy <= thickness; dy++) {
+                if (dx == 0 && dy == 0) continue; // skip center
+                g2.drawString(text, x + dx, y + dy);
+            }
+        }
+
+        g2.setColor(fillColor);
+        g2.drawString(text, x, y);
+    }
+
+
 }

@@ -22,6 +22,7 @@ public class TileRegistry {
     public static final char FORCE_DOWN = 'v';
     public static final char FORCE_LEFT = '<';
     public static final char FORCE_RIGHT = '>';
+    public static final char ENEMY = 'e';
     
     private TileRegistry() {
         initializeTiles();
@@ -54,7 +55,8 @@ public class TileRegistry {
             new ForceUpTile(),
             new ForceDownTile(),
             new ForceLeftTile(),
-            new ForceRightTile()
+            new ForceRightTile(),
+            new Enemy()
         };
         
     }

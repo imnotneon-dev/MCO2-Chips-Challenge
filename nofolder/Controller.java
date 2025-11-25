@@ -200,6 +200,9 @@ public class Controller {
     public int getTotalChips() { return totalChips; }
     public boolean hasRedKey() { return chip.getInventory().hasRedKey(); }
     public boolean hasBlueKey() { return chip.getInventory().hasBlueKey(); }
+    public boolean hasFlippers() { return chip.getInventory().hasFlippers(); }
+    public boolean hasFireBoots() { return chip.getInventory().hasFireBoots(); }
+    public boolean hasIceSkates() { return chip.getInventory().hasIceSkates(); }
     public boolean isLevelComplete() { return levelComplete; }
     public boolean isPlayerAlive() { return playerAlive; }
     public int getCurrentLevelIndex() { return nextLevel.getCurrentLevel(); }
