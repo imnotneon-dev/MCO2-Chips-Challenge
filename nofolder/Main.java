@@ -21,7 +21,7 @@ public class Main {
 
         javax.swing.SwingUtilities.invokeLater(() -> {
             MyFrame view = new MyFrame();
-            Sound.playMusic("BGMusic.wav"); // change to /sound/BGMusic.wav if packaged
+            SoundManager.playMusic("BGMusic.wav"); // change to /sound/BGMusic.wav if packaged
         });
     }
 }
