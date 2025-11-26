@@ -1,7 +1,5 @@
 /**
- *  Levels Class
- * 
- * - Handles the layout of the maps inside the game. It currently has 3 levels and it is used by the Display class to show the map layouts and
+ * Handles the layout of the maps inside the game. It currently has 3 levels and it is used by the Display class to show the map layouts and
  * it is the one to show the tile characters, hazard(water/fire) tiles, doors, force tiles, collectibles, and exit tile.
  * @author Jenrick Lim, Ryan Malapitan (S16)
  */
@@ -76,8 +74,11 @@ public class Levels {
     }
 
     /**
-     * Current layout for the third map, it is a combination of difficulty for past levels as it features both hazard and force tiles and key and door tiles
-     * This map currently has force tiles, flippers, water tiles, fire boots, fire tiles, red key, red door, blue key, blue door and 5 chips to pass the level
+     * Current layout for the third map, it is a combination of difficulty for past levels as it features both hazard plus
+     * the additional ice tile. This level also features force tiles and door tiles, with a new green and purple teleporter tile with the item of 
+     * teleportation device. This map also features the implementation of the enemy tiles of chip.
+     * This map currently has force tiles, flippers, water tiles, fire boots, fire tiles, ice skates, ice tiles, green and purple teleporter tiles,
+     * teleportation device, enemy tiles, red key, red door, blue key, blue door and 5 chips to pass the level
      * 
      * @return Levels- returns the current map layout for level 3 for the Display class to use
      */
@@ -129,7 +130,7 @@ public class Levels {
      * has been collected
      * 
      * @param map - the map layout accepted by the method
-     * @return - returns the number of chips the map has for requirement purposes
+     * @return count the number of chips the map has for requirement purposes
      */
     private static int countChips(char[][] map) {
         int count = 0;

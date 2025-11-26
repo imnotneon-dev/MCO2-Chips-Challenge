@@ -11,6 +11,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/**
+ * This class features the main panel of the game, it contains the map panel for the level and game simulation, level selection to choose from levels,
+ * an instructions tab to figure out the layout of the game, a mute button for all of the tabs for the BGMusic, and an exit to main menu 
+ * and an exit game feature
+ * 
+ * Buttons and Sprites appear here for the player to see with set fonts and the proper frame size
+ * @author Jenrick Lim, Ryan Malapitan (S16)
+ */
 public class MyFrame extends JFrame {
     private JPanel mainMenuPanel;
     private MapPanel gamePanel;
@@ -18,6 +26,10 @@ public class MyFrame extends JFrame {
     private BufferedImage backgroundImage;
     private JButton muteButton;
 
+    /**
+     * This is the main constructor for the MyFrame class, it features the Title of "Chip's Challenge" the background image
+     * and the main menu of the game
+     */
     public MyFrame() {
         this.setTitle("Chips Challenge");
         this.setSize(700, 700);
@@ -31,6 +43,9 @@ public class MyFrame extends JFrame {
         this.setVisible(true);
     }
        
+    /**
+     * This is the helper function to load the background image of the game
+     */
     private void loadBackgroundImage() {
         try {
             backgroundImage = ImageIO.read(new File("background.png"));
@@ -40,8 +55,13 @@ public class MyFrame extends JFrame {
         }
     }
 
+    /**
+     * This is the function in order to create the main menu panel of the game, it features the play level 1 button
+     * select level button, instructions button, and the exit button
+     * 
+     * This method also handles the font styling and sizing of each button and their action listeners when you click the buttons
+     */
     private void createMainMenu() {
-        // Your existing main menu creation code
         mainMenuPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -53,7 +73,6 @@ public class MyFrame extends JFrame {
         };
         mainMenuPanel.setLayout(null);
 
-        // Buttons
         JButton playButton = new JButton("Play Level 1");
         JButton selectLevelButton = new JButton("Select Level");
         JButton instructionsButton = new JButton("Instructions");
@@ -66,17 +85,13 @@ public class MyFrame extends JFrame {
         instructionsButton.setBounds(190, 490, 300, 60);
         exitButton.setBounds(190, 560, 300, 60);
 
-        // Style buttons (your existing font and cursor code)
         Font buttonFont = new Font("Courier New", Font.BOLD, 18);
-        // Play button - start game
         playButton.addActionListener(e -> startGame(0));
 
         selectLevelButton.addActionListener(e -> showLevelSelector());
 
-        // Instructions button
         instructionsButton.addActionListener(e -> showInstructions());
 
-        // Exit button
         exitButton.addActionListener(e -> System.exit(0));
 
         playButton.setFont(buttonFont);
@@ -90,10 +105,16 @@ public class MyFrame extends JFrame {
         mainMenuPanel.add(exitButton);
     }
 
+    /**
+     * This is the function to start the game of Chip's Challenge, it calls the controller and mapPanel class for it to work,
+     * it accepts the starting level as a parameter to choose what level to start with
+     * 
+     * @param startingLevel the number of level that the game will start and run
+     */
     public void startGame(int startingLevel) {
         gameController = new Controller();
         gameController.setMainMenu(this);
-        gameController.setStartingLevel(startingLevel); // Set the starting level
+        gameController.setStartingLevel(startingLevel);
         
         gamePanel = new MapPanel(gameController);
         this.setContentPane(gamePanel);
@@ -102,6 +123,10 @@ public class MyFrame extends JFrame {
         gamePanel.requestFocusInWindow();
     }
 
+    /**
+     * This method helps the player to show the levels 1, 2, and 3 for them to choose on
+     * This method helps the player to start a level of their choice
+     */
         private void showLevelSelector() {
         JPanel levelSelectPanel = new JPanel() {
             @Override
@@ -114,24 +139,20 @@ public class MyFrame extends JFrame {
         };
         levelSelectPanel.setLayout(null);
 
-        // Title
         JLabel titleLabel = new JLabel("SELECT LEVEL", JLabel.CENTER);
         titleLabel.setBounds(35, 300, 600, 40);
         titleLabel.setFont(new Font("Courier New", Font.BOLD, 32));
         titleLabel.setForeground(java.awt.Color.WHITE);
         levelSelectPanel.add(titleLabel);
 
-        // Add mute button
         JButton muteButton = SoundManager.createMuteButton();
         levelSelectPanel.add(muteButton);
 
-        // Level buttons
         JButton level1Button = new JButton("Level 1 - Beginner");
         JButton level2Button = new JButton("Level 2 - Intermediate");
         JButton level3Button = new JButton("Level 3 - Advanced");
         JButton backButton = new JButton("Back to Main Menu");
 
-        // Position level buttons
         level1Button.setBounds(190, 350, 300, 60);
         level2Button.setBounds(190, 420, 300, 60);
         level3Button.setBounds(190, 490, 300, 60);
@@ -149,10 +170,9 @@ public class MyFrame extends JFrame {
         level3Button.setCursor(handCursor);
         backButton.setCursor(handCursor);
 
-        // Level button actions
-        level1Button.addActionListener(e -> startGame(0)); // Level 1
-        level2Button.addActionListener(e -> startGame(1)); // Level 2
-        level3Button.addActionListener(e -> startGame(2)); // Level 3
+        level1Button.addActionListener(e -> startGame(0)); 
+        level2Button.addActionListener(e -> startGame(1));
+        level3Button.addActionListener(e -> startGame(2)); 
         backButton.addActionListener(e -> returnToMainMenu());
 
         levelSelectPanel.add(level1Button);
@@ -165,6 +185,12 @@ public class MyFrame extends JFrame {
         this.repaint();
     }
 
+    /**
+     * This method handles the panel for the instructions panel, it has the text for the instructions for the player to see,
+     * it features a scrollable pane with text, a mute button and a back to main menu button
+     * 
+     * @return the instructions panel that was made by fonts and button styles
+     */
     private JPanel createInstructionsPanel() {
     JPanel instructionsPanel = new JPanel() {
         @Override
@@ -177,22 +203,20 @@ public class MyFrame extends JFrame {
     };
     instructionsPanel.setLayout(null);
 
-    // Instructions Title
-    JLabel titleLabel = new JLabel("CHIP'S CHALLENGE - INSTRUCTIONS", JLabel.CENTER);
-    titleLabel.setBounds(50, 40, 600, 40);
-    titleLabel.setFont(new Font("Courier New", Font.BOLD, 28));
-    titleLabel.setForeground(java.awt.Color.WHITE);
-    instructionsPanel.add(titleLabel);
-    JButton muteButton = SoundManager.createMuteButton();
-    instructionsPanel.add(muteButton);
+        JLabel titleLabel = new JLabel("CHIP'S CHALLENGE - INSTRUCTIONS", JLabel.CENTER);
+        titleLabel.setBounds(50, 40, 600, 40);
+        titleLabel.setFont(new Font("Courier New", Font.BOLD, 28));
+        titleLabel.setForeground(java.awt.Color.WHITE);
+        instructionsPanel.add(titleLabel);
+        JButton muteButton = SoundManager.createMuteButton();
+        instructionsPanel.add(muteButton);
 
-    // Scrollable Instructions Text Area
-    JTextArea instructionsText = new JTextArea();
-    instructionsText.setText(
+        JTextArea instructionsText = new JTextArea();
+        instructionsText.setText(
         "GAME OBJECTIVE:\n" +
-        "• Collect all computer chips on each level\n" +
+        "• Collect all microchips on each level\n" +
         "• Reach the exit portal to advance to the next level\n" +
-        "• Avoid hazards and solve puzzles to progress\n\n" +
+        "• Avoid hazards and solve puzzles to help Chip progress!\n\n" +
         
         "CONTROLS:\n" +
         "• W or ↑ Arrow - Move Up\n" +
@@ -207,71 +231,74 @@ public class MyFrame extends JFrame {
         "• R - Red Door (requires Red Key)\n" +
         "• b - Blue Key (opens Blue Doors)\n" +
         "• B - Blue Door (requires Blue Key)\n" +
-        "• @ - You (the player character)\n" +
-        "• E - Exit Portal (finish level here)\n" +
-        "• X - Wall (blocks movement)\n" +
+        "• @ - Chip (the player character)\n" +
+        "• E - Exit Portal (finish level once chips has been collected)\n" +
+        "• X - Walls (blocks movement of chip)\n" +
         "• W - Water (deadly without flippers)\n" +
+        "• _ - Flippers (protect from water tiles)\n" +
         "• F - Fire (deadly without fire boots)\n" +
-        "• S - Fire Boots (protect from fire tiles)\n" +
-        "• I - Ice (slippery surface)\n\n" +
+        "• L - Fire Boots (protect from fire tiles)\n" +
+        "• I - Ice (slippery surface)\n" +
+        "• Q - Ice Skates (makes you move in ice tiles)\n" +
+        "• P - Purple Teleporter (makes you teleport if you have the teleportation device)\n" +
+        "• G - Green Teleporter (makes you teleport if you have the teleportation device)\n" +
+        "• t - Teleportation Device (makes you teleport through teleporters)\n" +
+        "• e - Enemy (kills chip if he walks toward them)\n\n" +
+        
         
         "GAME RULES:\n" +
-        "• You must collect ALL required chips before exiting\n" +
-        "• Doors remain locked without the correct key\n" +
-        "• Hazard tiles will kill you without proper equipment\n" +
-        "• If you die, the level restarts\n" +
-        "• Complete all levels to win the game\n\n" +
-        
-        "STRATEGY TIPS:\n" +
-        "• Plan your route before moving\n" +
-        "• Collect keys before approaching doors\n" +
-        "• Some items are required to pass hazards\n" +
-        "• Watch out for tricky level layouts\n" +
-        "• Take your time and think carefully!"
+        "• You MUST collect ALL required chips before exiting the portal!\n" +
+        "• Doors remain locked without the correct colored key!\n" +
+        "• Hazard tiles will kill you without the proper equipment!\n" +
+        "• If you die, the level restarts!\n" +
+        "• Complete all levels to win the game!!"
     );
     
-    instructionsText.setFont(new Font("Arial", Font.PLAIN, 16));
-    instructionsText.setForeground(java.awt.Color.WHITE);
-    instructionsText.setBackground(new java.awt.Color(0, 0, 0, 180));
-    instructionsText.setOpaque(true);
-    instructionsText.setEditable(false);
-    instructionsText.setLineWrap(true);
-    instructionsText.setWrapStyleWord(true);
+        instructionsText.setFont(new Font("Arial", Font.PLAIN, 16));
+        instructionsText.setForeground(java.awt.Color.WHITE);
+        instructionsText.setBackground(new java.awt.Color(0, 0, 0, 180));
+        instructionsText.setOpaque(true);
+        instructionsText.setEditable(false);
+        instructionsText.setLineWrap(true);
+        instructionsText.setWrapStyleWord(true);
 
-    JScrollPane scrollPane = new JScrollPane(instructionsText);
-    scrollPane.setBounds(50, 260, 600, 290);
-    scrollPane.setBorder(BorderFactory.createLineBorder(java.awt.Color.GRAY));
-    scrollPane.getViewport().setOpaque(false);
-    scrollPane.setOpaque(false);
-    instructionsPanel.add(scrollPane);
+        JScrollPane scrollPane = new JScrollPane(instructionsText);
+        scrollPane.setBounds(50, 260, 600, 290);
+        scrollPane.setBorder(BorderFactory.createLineBorder(java.awt.Color.GRAY));
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setOpaque(false);
+        instructionsPanel.add(scrollPane);
 
-    // Back button
-    JButton backButton = new JButton("Back to Main Menu");
-    backButton.setBounds(245, 560, 200, 50);
-    backButton.setFont(new Font("Courier New", Font.BOLD, 18));
-    backButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-    backButton.addActionListener(e -> returnToMainMenu());
+        JButton backButton = new JButton("Back to Main Menu");
+        backButton.setBounds(245, 560, 200, 50);
+        backButton.setFont(new Font("Courier New", Font.BOLD, 18));
+        backButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        backButton.addActionListener(e -> returnToMainMenu());
     
     instructionsPanel.add(backButton);
     return instructionsPanel;
     }
 
+    /**
+     * This method handles the showing of instructions to the instruction panel
+     */
     public void showInstructions() {
-        // Your instructions panel code
         JPanel instructionsPanel = createInstructionsPanel();
         this.setContentPane(instructionsPanel);
         this.revalidate();
         this.repaint();
     }
 
-    // ADD THIS METHOD - Called from Controller to return to main menu
+    /**
+     * This method handles for the player to go back to the main menu, it will set the panel, repaint it, and set mapPanel and controller to null when
+     * succesfully exiting the main menu
+     */
     public void returnToMainMenu() {
-        createMainMenu(); // Recreate the main menu panel
+        createMainMenu(); 
         this.setContentPane(mainMenuPanel);
         this.revalidate();
         this.repaint();
         
-        // Clean up game resources if needed
         gamePanel = null;
         gameController = null;
         

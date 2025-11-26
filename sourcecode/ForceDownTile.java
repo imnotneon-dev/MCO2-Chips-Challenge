@@ -1,102 +1,29 @@
 import javax.swing.ImageIcon;
 
+/**
+ * This tile represents a ForceDown tile on the map. They force chip into the next force tile
+ * until he steps onto a non-force tile
+ */
 public class ForceDownTile extends Tiles {
 
+    /**
+     * This constructor is for a new ForceDownTile with its appropriate char symbol and sprite image
+     */
     public ForceDownTile() {
         super('v');
         sprite = new ImageIcon("ForceDownTile.png");
     }
 
+    /**
+     * Determines whether chip can still be forced a direction within a force tile
+     * 
+     * @param chip      the current chip of the player attempting to move to this tile
+     * @param map       the current map layout that chip is interacting with
+     * @return {@code true} if chip can move within the force tiles
+     *         {@ code false} if chip cannot move within the force tiles      
+     */
     @Override
     public boolean applyForce(Chip chip, Maps map) {
         return chip.tryMove(0, 1, map);
     }
-
-    // or we put the old logic
-    /*
-    public static void applyForce(Chip chip, Maps map) {
-        while (true) {
-            char tileUnder = map.getTile(chip.getX(), chip.getY());
-            if (!isForceTile(tileUnder)) {
-                tileUnder = chip.getCurrentTileBelow();
-                if (!isForceTile(tileUnder)) 
-                    break;
-            }
-
-            int oldX = chip.getX();
-            int oldY = chip.getY();
-            int newX = oldX;
-            int newY = oldY;
-
-            switch (tileUnder) {
-                case FORCE_UP:    
-                    newY--; 
-                    break;
-                case FORCE_DOWN:  
-                    newY++; 
-                    break;
-                case FORCE_LEFT:  
-                    newX--; 
-                    break;
-                case FORCE_RIGHT: 
-                    newX++; 
-                    break;
-                default: 
-                    break;
-            }
-
-            if (!map.inBounds(newX, newY)) 
-                break;
-
-            char nextTile = map.getTile(newX, newY);
-
-            if (!isWalkable(nextTile, chip.getInventory(), map.getRequiredChips()))
-                break;
-
-            map.setTile(oldX, oldY, tileUnder);
-
-            chip.setX(newX);
-            chip.setY(newY);
-
-            chip.setCurrentTileBelow(nextTile);
-
-            if (isCollectible(nextTile)) { 
-                switch (nextTile) {
-                    case Inventory.CHIP:
-                        chip.getInventory().addChips();
-                        break;
-                    case Inventory.RED_KEY:
-                        chip.getInventory().addRedKey();
-                        break;
-                    case Inventory.BLUE_KEY:
-                        chip.getInventory().addBlueKey();
-                        break;
-                    case Inventory.FLIPPERS:
-                        chip.getInventory().addFlippers();
-                        break;
-                    case Inventory.FIRE_BOOTS:
-                        chip.getInventory().addFireBoots();
-                        break;
-                }
-                chip.setCurrentTileBelow(BLANK);
-                map.setTile(newX, newY, BLANK);
-            }
-
-            if (nextTile == WATER && !chip.getInventory().hasFlippers()) {
-                chip.die();
-                map.setTile(newX, newY, WATER);
-                return;
-            }
-            if (nextTile == FIRE && !chip.getInventory().hasFireBoots()) {
-                chip.die();
-                map.setTile(newX, newY, FIRE);
-                return;
-            }
-
-            map.setTile(newX, newY, Chip.CHIP);
-            if (!isForceTile(nextTile)) 
-                break;
-        }
-    }
-    */
 }

@@ -1,7 +1,5 @@
 /**
- * NextLevel Class
- * 
- * - Handles the progression and transition of map/level based on the player. 
+ * Handles the progression and transition of map/level based on the player. 
  * This class works with the Maps class and Levels class
  * @author Jenrick Lim, Ryan Malapitan (S16)
  */
@@ -33,6 +31,7 @@ public class NextLevel {
 
     /**
      * Gets the current map level and it gives the clone of it instantly to restore the original state
+     * 
      * @return - it returns the original state of the current map
      */
     public Maps getCurrentMap() { 
@@ -56,6 +55,7 @@ public class NextLevel {
 
     /**
      * Accepts the collected chips of the player and decides if the player gets to pass or not.
+     * 
      * @param collectedChips - current collection of chips by the player
      * @return true if collected chips are equal to the required chips of the current level, false if not
      */
@@ -68,6 +68,7 @@ public class NextLevel {
     /**
      * Mainly for the transitioning of levels of the game. 
      * It increments the current level therefore it advances the player to the next level
+     * 
      * @return true - if the current level is still within length (1/2), false - if the current level is already max (3)
      */
     public boolean advance() {
@@ -78,6 +79,12 @@ public class NextLevel {
         return false; 
     }
 
+    /**
+     * This method helps to determine whether the max level has been exceeded or not
+     * 
+     * @return {@code true} if current level is currently at 2
+     *         {@code true} if current level is not currently at 2
+     */
     public boolean getMaxLevel() {
         return (currentLevel == 2);
     }

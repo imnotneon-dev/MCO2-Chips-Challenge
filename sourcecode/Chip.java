@@ -56,28 +56,35 @@ public class Chip extends Tiles {
     
     /** 
      * Constructor of Chip Class, creates a new Chip that accepts the starting position. 
+     * This constructor calls the Tiles to have chip with the '@' symbol, it initalizes chip's starting position in the map,
+     * sets his alive state with a new inventory and starts him with a blank tile
      * 
      * @param startX - the starting x-coordinate
      * @param startY - the starting y-coordinate
      */
     public Chip(int startX, int startY) {
-        super(CHIP); // Call Tiles constructor with '@' symbol
+        super(CHIP);
         this.x = startX;
         this.y = startY;
         this.alive = true;
         this.INVENTORY = new Inventory();
-        this.currentTileBelow = ' '; // Start with blank tile below
-        this.sprite = new ImageIcon("Chip.png"); // Set the sprite
+        this.currentTileBelow = ' '; 
+        this.sprite = new ImageIcon("Chip.png"); 
     }
 
     /** 
      * Implement the abstract isWalkable method from Tiles
      * Since Chip is the player, this determines if the player can walk on other tiles
      * For the Chip tile itself, it should not be walkable by other entities
+     * 
+     * @param chip      the current chip of the player attempting to move to this tile
+     * @param map       the current map layout that chip is interacting with
+     * @param inv       the current inventory status of chip
+     * @param requiredChips     the current chips needed to pass the level
+     * @return {@code false} by default other entities cannot walk through the player (chip)  
      */
     @Override
     public boolean isWalkable(Chip chip, Maps map, Inventory inv, int requiredChips) {
-        // Chip tile itself is not walkable (other entities can't walk through the player)
         return false;
     }
 
@@ -175,7 +182,9 @@ public class Chip extends Tiles {
     }
 
     /**
-     * Check if a tile type is collectible
+     * Checks if a tile type (char) is collectible of chip 
+     * 
+     * @param tileType the tile type / symbol of the specific tile under
      */
     private boolean isCollectible(char tileType) {
         return tileType == '#' || // Chip item
@@ -188,7 +197,10 @@ public class Chip extends Tiles {
     }
 
     /**
-     * Handle hazard tiles that might kill the player
+     * Determines if the tile under is a hazard type that can kill chip if he does not have the
+     * specific equipment
+     * 
+     * @param tileType the tile type / symbol of the specific tile under
      */
     private void handleHazardTile(char tileType) {
         switch (tileType) {
@@ -207,6 +219,7 @@ public class Chip extends Tiles {
 
     /**
      * This method collects an item that chip '@' has crossed upon and add the said item to chip's current inventory
+     * 
      * @param item - the item that the character collected (chip, colored key, boot/flipper)
      */
     public void collect(char item) {
@@ -235,6 +248,17 @@ public class Chip extends Tiles {
         }
     }
 
+    /**
+     * This method determines if chip can still move towards the next tile,
+     * it also handles whether chip can move through ice or hazard tiles
+     * 
+     * @param dx the next x coordinate after
+     * @param dy the next y coordinate after
+     * @param map the current map layout the game is using
+     * @return {@code true} when chip can still move towards the next tile
+     *         {@code false} when chip is trying to move out of bounds
+     *         {@code false} when chip is trying to on an unwalkable tile
+     */
     public boolean tryMove(int dx, int dy, Maps map) {
         int newX = x + dx;
         int newY = y + dy;
@@ -290,7 +314,7 @@ public class Chip extends Tiles {
     /**
      * Returns chip's current x-coordinate
      * 
-     * @return - x-coordinate
+     * @return {@code int} x-coordinate
      */
     public int getX() {
         return x;
@@ -299,7 +323,7 @@ public class Chip extends Tiles {
     /**
      * Returns chip's current y-coordinate
      * 
-     * @return - y-coordinate
+     * @return {@code int} y-coordinate
      */
     public int getY() {
         return y;
@@ -326,7 +350,8 @@ public class Chip extends Tiles {
     /**
      * Returns whether Chip is alive/dead
      * 
-     * @return true if alive = 'true', false if alive = 'false'
+     * @return {@code true} if alive
+     *         {@code false} if chip died
      */
     public boolean isAlive() {
         return alive;
@@ -335,7 +360,7 @@ public class Chip extends Tiles {
    /**
     * Returns chip's current inventory 
     * 
-    * @return the current inventory of chip
+    * @return {@code Inventory} the current inventory of chip
     */
     public Inventory getInventory() {
         return INVENTORY;
@@ -344,7 +369,7 @@ public class Chip extends Tiles {
    /**
     * Returns chip's current tile below him 
     * 
-    * @return the character of the tile below
+    * @return {@code char} the character of the tile below
     */
     public char getCurrentTileBelow() {
         return currentTileBelow;
@@ -361,6 +386,8 @@ public class Chip extends Tiles {
 
     /**
      * Get the sprite for rendering
+     * 
+     * @return {@code ImageIcon} the sprite for chip
      */
     public ImageIcon getSprite() {
         return sprite;

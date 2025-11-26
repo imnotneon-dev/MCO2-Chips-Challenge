@@ -9,6 +9,11 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+/**
+ * This class sets up the map part of the game, it is a panel that uses the controller class and this panel sets up the key action listeners
+ * that will simulate the movement of chip
+ *  @author Jenrick Lim, Ryan Malapitan (S16)
+ */
 public class MapPanel extends JPanel {
     private Controller controller;
     private int tileSize;
@@ -27,6 +32,10 @@ public class MapPanel extends JPanel {
         this.add(muteButton);
     }
 
+/**
+ * This class will help set up the map as it is the one to calculate the tile size of the maps, making the preferred size
+ * to have the proper width and height
+ */
     private void calculateTileSize() {
         char[][] map = controller.getCurrentMap().getMap();
         int rows = map.length;
@@ -39,6 +48,10 @@ public class MapPanel extends JPanel {
         setPreferredSize(new Dimension(width, height));
     }
 
+/**
+ * This class will simulate the movement of the player as it handles the W A S D and arrow keys for directional movement,
+ * and the escape key for level completion and main menu exit of the game
+ */
     private void setupKeyListener() {
         addKeyListener(new KeyAdapter() {
             @Override
@@ -88,6 +101,12 @@ public class MapPanel extends JPanel {
         });
     }
 
+/**
+ * This class will simulate the sprites of the map layout, it paints the map and its tiles, inventory items,
+ * player, enemies, and special tiles
+ * 
+ * @param g Graphics parameter
+ */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -132,14 +151,19 @@ public class MapPanel extends JPanel {
                 offsetY + player.getY() * tileSize,
                 tileSize, tileSize, this);
         }
-
         drawHUD(g);
     }
 
+    /**
+     * This method helps with displays of the hud part of the game, it displays the current level, microchip status, 
+     * item that chip has to inform the player of the contents in his inventory
+     * 
+     * This is where the fonts and sizes of the hud text in
+     * @param g Graphics parameter
+     */
     private void drawHUD(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
 
         g2.setFont(new Font("Segoe UI Emoji", Font.BOLD, 20));
 
@@ -224,6 +248,15 @@ public class MapPanel extends JPanel {
         }
     }
 
+    /**
+     * This method mainly helps with setting up the outlined text of the map, includes the microchip status and the item statuses
+     * Helps with the gui for clarity and status of the game
+     * @param g2 Graphics2D parameter
+     * @param text is a string that contains the text placed
+     * @param x x coordinate of text
+     * @param y y coordinate of text
+     * @param fillColor color of the text
+     */
     private void drawOutlinedText(Graphics2D g2, String text, int x, int y, Color fillColor) {
         Font font = g2.getFont();
         g2.setFont(font);
@@ -241,6 +274,4 @@ public class MapPanel extends JPanel {
         g2.setColor(fillColor);
         g2.drawString(text, x, y);
     }
-
-
 }

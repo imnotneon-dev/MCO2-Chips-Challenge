@@ -1,7 +1,7 @@
 /**
  * Inventory Class
  * 
- * - The available inventory of Chip, this class will change its attributes upon collection of items, reset of level, and interacting with doors
+ * The available inventory of Chip, this class will change its attributes upon collection of items, reset of level, and interacting with doors
  * This class features the use of characters to identify which item will be acquired in the inventory
  * @author Jenrick Lim, Ryan Malapitan (S16)
  */
@@ -27,8 +27,14 @@ public class Inventory {
      */
     private boolean hasFireBoots;
 
+    /**
+     * Determines if chip currently has acquired the ice skates object to move through ice tiles or not
+     */
     private boolean hasIceSkates;
 
+    /**
+     * Determines if chip currently has acquired the teleportation device object to teleport through teleporter tiles or not
+     */
     private boolean hasTeleportationDevice;
 
     /**
@@ -57,16 +63,23 @@ public class Inventory {
     public static final char FLIPPERS = '_';
 
     /**
-    * Character symbol representing the fire boots objects
-    */
+     * Character symbol representing the fire boots objects
+     */
     public static final char FIRE_BOOTS = 'L';
 
+    /**
+     * Character symbol representing the ice skates objects
+     */
     public static final char ICE_SKATES = 'Q';
 
+    /**
+     * Character symbol representing the teleportationd device objects
+     */
     public static final char TELEPORTATION_DEVICE = 't';
 
     /**
-     * Constructor for the Inventory class that automatically sets the inventory to fire boots and flippers to false upon the start of the game
+     * Constructor for the Inventory class that automatically sets the inventory to fire boots, flippers, ice skates, 
+     * and teleportaion device to false upon the start of the game
      */
     public Inventory() {
         hasFireBoots = false;
@@ -82,82 +95,104 @@ public class Inventory {
         redKeys++;
     }
 
-    /**
+   /**
     * Add a blue key onto the inventory if chip acquires one
     */
     public void addBlueKey() {
         blueKeys++;
     }
 
-    /**
+   /**
     * Add a flipper equipment onto the inventory if chip acquires one
     */
     public void addFlippers() {
         hasFlippers = true;
     }
 
-    /**
+   /**
     * Add a fire boots equipment onto the inventory if chip acquires one
     */
     public void addFireBoots() {
         hasFireBoots = true;
     }
 
+   /**
+    * Add an ice skates equipment onto the inventory if chip acquires one
+    */
     public void addIceSkates() {
         hasIceSkates = true;
     }
 
+   /**
+    * Add a teleportation device equipment onto the inventory if chip acquires one
+    */
     public void addTeleportationDevice() {
         hasTeleportationDevice = true;
     }
 
-    /**
+   /**
     * Add a chip onto the inventory if chip acquires one
     */
     public void addChips() {
         chips++;
     }
 
-    /**
+   /**
     * Determines if chip has a single red key
     * 
-    * @return true - if red keys are currently 1 or more, false - if red keys are 0
+    * @return {@code true} if chip has more than 0 red keys in his inventory
+    *        {@code false} if not 
     */
     public boolean hasRedKey() {
         return redKeys > 0;
     }
 
-    /**
+   /**
     * Determines if chip has a single blue key
     * 
-    * @return true - if blue keys are currently 1 or more, false - if blue keys are 0
+    * @return {@code true} if chip has more than 0 blue keys in his inventory
+    *        {@code false} if not 
     */
     public boolean hasBlueKey() {
         return blueKeys > 0;
     }
 
-    /**
+   /**
     * Determines if chip has a flipper
     * 
-    * @return true - if chip has a flipper object in the inventory, false - if not
+    * @return {@code true} if chip has a flippers object in the inventory, 
+    *        {@code false} if not 
     */
     public boolean hasFlippers() {
         return hasFlippers;
     }
 
     /**
-    * Determines if chip has a fire boots
+    * Determines if chip has fire boots
     * 
-    * @return true - if chip has a fire boots object in the inventory, false - if not 
+    * @return {@code true} if chip has fire boots object in the inventory, 
+    *         {@code false} if not 
     */
     public boolean hasFireBoots() {
         return hasFireBoots;
     }
 
+   /**
+    * Determines if chip has ice skates
+    * 
+    * @return {@code true} if chip has an ice skates object in the inventory, 
+    *        {@code false} if not 
+    */
     public boolean hasIceSkates() {
         return hasIceSkates;
     }
 
+   /**
+    * Determines if chip has a teleportation device
+    * 
+    * @return {@code true} if chip has a teleportation device object in the inventory, 
+    *        {@code false} if not 
+    */
     public boolean hasTeleportationDevice() {
         return hasTeleportationDevice;
     }
@@ -165,7 +200,7 @@ public class Inventory {
     /**
     * Determines how many chips the player has
     * 
-    * @return chips - the current number of chips inside player's inventory
+    * @return {@code int} the current number of chips inside player's inventory
     */
     public int getChips() {
         return chips;
