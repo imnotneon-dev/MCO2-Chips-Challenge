@@ -132,17 +132,15 @@ public class Chip extends Tiles {
         // Get the target tile object for interaction
         Tiles targetTile = map.getTileObject(newX, newY);
         
-        // Use the tile's isWalkable method to check if movement is allowed
+        // Use isWalkable method to check if movement is allowed
         if (!targetTile.isWalkable(this, map, INVENTORY, map.getRequiredChips())) {
             return "blocked";
         }
 
         char targetTileType = targetTile.getSymbol();
 
-        // Handle exit tile
         if (targetTileType == TileRegistry.EXIT) {
             if (INVENTORY.getChips() >= map.getRequiredChips()) {
-                // Move to exit position first
                 map.setTile(x, y, currentTileBelow);
                 x = newX;
                 y = newY;
@@ -150,19 +148,16 @@ public class Chip extends Tiles {
                 map.setTile(x, y, CHIP);
                 return "exit";
             } else {
-                return "blocked"; // Not enough chips
+                return "blocked"; 
             }
         }
 
-        // Handle collectible items
         if (isCollectible(targetTileType)) {
             collect(targetTileType);
-            // Remove the collectible from the map after collection
             map.setTile(newX, newY, ' ');
-            targetTileType = ' '; // Now it's blank after collection
+            targetTileType = ' '; 
         }
 
-        // Move the player
         map.setTile(x, y, currentTileBelow); // Restore previous tile
         x = newX;
         y = newY;
@@ -204,12 +199,12 @@ public class Chip extends Tiles {
      */
     private void handleHazardTile(char tileType) {
         switch (tileType) {
-            case 'W': // Water
+            case 'W': // Water Tile
                 if (!INVENTORY.hasFlippers()) {
                     die();
                 }
                 break;
-            case 'F': // Fire
+            case 'F': // Fire Tile
                 if (!INVENTORY.hasFireBoots()) {
                     die();
                 }
